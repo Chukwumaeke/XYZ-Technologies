@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xyztechnologiesappdeployment
+spec:
+  selector:
+    matchLabels:
+      app: xyztechnologiesapp
+  replicas: 2
+  template:
+    metadata:
+      name: xyztechnologiesapppod
+      labels:
+        app: xyztechnologiesapp
+    spec:
+      containers:
+      - name: xyztechnologiescontainer
+        image: ucfrance/xyztechnologies
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m" 
+        ports:
+        - containerPort: 8080
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xyztechnologiesapp
+spec:
+  selector:
+    app: xyztechnologiesapp
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: NodePort
